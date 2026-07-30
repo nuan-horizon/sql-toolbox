@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL 学习工具箱 · 手机版</title>
+<style>
+
+  body { margin:0; background:#f6f7f9; color:#1f2328; font-family:-apple-system,"Microsoft YaHei",sans-serif; padding:24px; }
+  .card { max-width:820px; margin:0 auto; background:#fff; border-radius:14px; box-shadow:0 2px 12px rgba(0,0,0,.08); padding:28px 32px; }
+  h1 { color:#0969da; font-size:22px; margin:0 0 4px; }
+  .meta { color:#57606a; font-size:13px; margin-bottom:14px; }
+  .motivation { background:#fff8c5; border:1px solid #d4a72c; border-radius:8px; padding:12px 14px; margin-bottom:20px; line-height:1.7; }
+  .tip { background:#ddf4ff; border:1px solid #54aeff; border-radius:8px; padding:12px 14px; margin-bottom:20px; line-height:1.7; font-size:14px; }
+  .stage { border:1px solid #d0d7de; border-radius:10px; padding:16px 18px; margin:14px 0; }
+  .stage-head { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  .stage-no { background:#0969da; color:#fff; font-size:13px; font-weight:700; border-radius:20px; padding:3px 12px; white-space:nowrap; }
+  .stage-title { font-size:16px; font-weight:700; color:#1f2328; }
+  .stage-why { color:#57606a; font-size:13px; margin-bottom:10px; line-height:1.6; }
+  .pts { list-style:none; padding:0; margin:0; }
+  .pts li { background:#f6f8fa; border-radius:8px; padding:10px 12px; margin:6px 0; font-size:14px; line-height:1.6; }
+  .pts li b { color:#0969da; }
+  .done { border-left:5px solid #1a7f37; }
+  .done .pts li::after { content:" ✓ 已掌握"; color:#1a7f37; font-size:12px; }
+  .current { border-left:5px solid #bc4c00; background:#fff5f0; }
+  .current .pts li.here { background:#ffebe6; border:1px solid #bc4c00; }
+  .future .pts li { color:#57606a; }
+  .legend { display:flex; gap:16px; font-size:12px; color:#57606a; margin:10px 0 0; flex-wrap:wrap; }
+  .legend span { display:inline-flex; align-items:center; gap:5px; }
+  .dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
+  .encourage { margin-top:18px; color:#1a7f37; font-weight:600; }
+  .note { background:#f6f8fa; border-radius:8px; padding:12px 14px; margin-top:16px; font-size:13px; color:#57606a; line-height:1.7; }
+
+
+  :root{
+    --bg:#f7f8fa; --card:#ffffff; --ink:#1f2d3d; --muted:#6b7785;
+    --brand:#2f6df0; --brand-soft:#eaf1ff; --ok:#1f9d55; --line:#e6e9ee;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",Arial,sans-serif;
+       background:var(--bg);color:var(--ink);line-height:1.7;padding:24px}
+  .wrap{max-width:760px;margin:0 auto}
+  header{background:var(--brand);color:#fff;border-radius:14px;padding:22px 24px;margin-bottom:18px}
+  header h1{margin:0 0 6px;font-size:20px}
+  header p{margin:0;opacity:.92;font-size:14px}
+  .tip{background:var(--brand-soft);border:1px solid #cfe0ff;color:#274690;
+       border-radius:10px;padding:12px 14px;font-size:13px;margin-bottom:18px}
+  .lesson{background:var(--card);border:1px solid var(--line);border-radius:12px;
+          padding:18px 20px;margin-bottom:14px}
+  .lesson h2{margin:0 0 8px;font-size:16px;color:var(--brand)}
+  .lesson .why{color:var(--muted);font-size:14px;margin:0 0 12px}
+  .code{background:#0f1d33;color:#e6f0ff;border-radius:8px;padding:12px 14px;
+        font-family:"SFMono-Regular",Consolas,Menlo,monospace;font-size:13.5px;
+        white-space:pre-wrap;margin:0 0 12px}
+  .biz{background:#fff8e6;border-left:4px solid #f0b429;border-radius:6px;
+       padding:10px 12px;font-size:13.5px;color:#7a5b00;margin:0 0 12px}
+  button.toggle{background:var(--brand);color:#fff;border:0;border-radius:8px;
+        padding:8px 14px;font-size:13px;cursor:pointer}
+  button.toggle:hover{opacity:.9}
+  .answer{margin-top:12px;background:var(--brand-soft);border-radius:8px;
+          padding:12px 14px;font-size:14px;color:#274690;display:none}
+  .answer.show{display:block}
+  .done{display:inline-block;margin-top:10px;font-size:13px;color:var(--ok)}
+  footer{text-align:center;color:var(--muted);font-size:12px;margin-top:20px}
+
+
+  body{font-family:-apple-system,"Microsoft YaHei",sans-serif;background:#f6f7f9;color:#1f2328;margin:0;padding:24px;}
+  .card{max-width:860px;margin:0 auto;background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);padding:28px 32px;}
+  h1{color:#0969da;font-size:23px;margin:0 0 4px;}
+  .meta{color:#57606a;font-size:13px;margin-bottom:18px;}
+  .motivation{background:#fff8e6;border-left:4px solid #f0a020;padding:12px 16px;border-radius:6px;margin-bottom:22px;font-size:14px;}
+  h2{color:#1f2328;border-bottom:2px solid #eaecef;padding-bottom:6px;margin-top:26px;font-size:18px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;}
+  th,td{border:1px solid #d0d7de;padding:9px 11px;text-align:left;vertical-align:top;}
+  th{background:#f6f8fa;color:#0969da;}
+  td code,th code{background:#1f2937;color:#e6edf3;padding:2px 6px;border-radius:4px;font-family:Consolas,monospace;}
+  .ex{color:#0a7d33;}
+  .tip{background:#fff8c5;border-radius:6px;padding:12px 16px;margin:16px 0;font-size:14px;line-height:1.7;}
+  .warn{background:#ffebe9;border-left:4px solid #cf222e;padding:12px 16px;border-radius:6px;margin:16px 0;font-size:14px;}
+  .foot{margin-top:26px;color:#57606a;font-size:13px;text-align:center;}
+
+
+  body { margin:0; background:#f6f7f9; color:#1f2328; font-family:-apple-system,"Microsoft YaHei",sans-serif; padding:24px; }
+  .card { max-width:780px; margin:0 auto; background:#fff; border-radius:14px; box-shadow:0 2px 12px rgba(0,0,0,.08); padding:28px 32px; }
+  h1 { color:#0969da; font-size:22px; margin:0 0 4px; }
+  .meta { color:#57606a; font-size:13px; margin-bottom:16px; }
+  .motivation { background:#fff1e5; border:1px solid #ffd8a8; border-radius:8px; padding:12px 14px; margin-bottom:20px; line-height:1.7; }
+  h2 { color:#0969da; font-size:16px; border-left:4px solid #0969da; padding-left:8px; margin:22px 0 8px; }
+  .why { background:#fff8c5; border:1px solid #f0e68c; border-radius:8px; padding:12px 14px; line-height:1.7; }
+  pre { background:#1f2937; color:#e5e7eb; border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13px; }
+  code { font-family:Consolas,Menlo,monospace; }
+  ul { line-height:1.9; padding-left:20px; }
+  li b { color:#cf222e; }
+  .encourage { margin-top:18px; color:#1a7f37; font-weight:600; }
+
+
+body{font-family:-apple-system,"Microsoft YaHei",sans-serif;background:#f6f7f9;color:#1f2328;margin:0;padding:24px;}
+.card{max-width:820px;margin:0 auto;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.06);padding:28px 32px;}
+h1{color:#0969da;font-size:22px;margin:0 0 6px;}
+.meta{color:#57606a;font-size:13px;margin-bottom:16px;}
+h2{color:#0969da;font-size:18px;border-bottom:2px solid #eaecef;padding-bottom:6px;margin-top:24px;}
+h3{color:#1f2328;font-size:15px;margin:18px 0 8px;}
+code{background:#eef1f4;padding:1px 5px;border-radius:4px;font-family:Consolas,Menlo,monospace;font-size:12px;color:#cf222e;}
+.note{background:#fff8c5;padding:10px 14px;border-radius:6px;font-size:13px;line-height:1.7;margin:8px 0;}
+.err{background:#fff5f5;border-left:4px solid #cf222e;padding:10px 14px;border-radius:6px;font-size:13px;line-height:1.7;margin:8px 0;}
+.err b{color:#cf222e;}
+.ok{background:#dafbe1;border-left:4px solid #1a7f37;padding:12px 14px;border-radius:6px;font-size:13px;line-height:1.8;margin:10px 0;}
+.footer{margin-top:22px;color:#57606a;font-size:13px;}
+
+
+  body { margin:0; background:#f6f7f9; color:#1f2328; font-family:-apple-system,"Microsoft YaHei",sans-serif; padding:24px; }
+  .card { max-width:760px; margin:0 auto; background:#fff; border-radius:14px; box-shadow:0 2px 12px rgba(0,0,0,.08); padding:28px 32px; }
+  h1 { color:#0969da; font-size:22px; margin:0 0 4px; }
+  .meta { color:#57606a; font-size:13px; margin-bottom:16px; }
+  .streak { color:#cf222e; font-weight:700; }
+  .motivation { background:#fff1e5; border:1px solid #ffd8a8; border-radius:8px; padding:12px 14px; margin-bottom:20px; line-height:1.7; }
+  h2 { color:#0969da; font-size:16px; border-left:4px solid #0969da; padding-left:8px; margin:22px 0 8px; }
+  .why { background:#fff8c5; border:1px solid #f0e68c; border-radius:8px; padding:12px 14px; line-height:1.7; }
+  .steps { background:#f6f8fa; border-radius:8px; padding:14px 18px; line-height:1.8; }
+  .steps label { display:block; margin:6px 0; cursor:pointer; }
+  pre { background:#1f2937; color:#e5e7eb; border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13px; }
+  code { font-family:Consolas,Menlo,monospace; }
+  .quiz { background:#f6f8fa; border-radius:8px; padding:14px 18px; line-height:1.8; }
+  .answer { color:#57606a; font-size:12px; margin-top:8px; }
+  .receipt { background:#dafbe1; border:1px solid #aceebb; border-radius:8px; padding:12px 14px; font-weight:600; }
+  .encourage { margin-top:18px; color:#1a7f37; font-weight:600; }
+
+
+  body { margin: 0; background: #f6f7f9; color: #1f2328; font-family: -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif; line-height: 1.7; }
+  .card { max-width: 860px; margin: 24px auto; background: #fff; border-radius: 12px; padding: 28px 32px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  h1 { color: #0969da; font-size: 24px; margin: 0 0 6px; }
+  .meta { color: #57606a; font-size: 14px; margin-bottom: 18px; }
+  .motivation { background: #fff4e5; border: 1px solid #ffd8a8; border-radius: 8px; padding: 14px 16px; color: #8a4b00; margin-bottom: 14px; }
+  .toolbox { background: #e7f1ff; border: 1px solid #a8d0ff; border-radius: 8px; padding: 14px 16px; color: #0a4a8f; margin-bottom: 22px; }
+  .toolbox a { color: #0969da; font-weight: 600; }
+  h2 { color: #0969da; font-size: 18px; margin: 22px 0 8px; border-left: 4px solid #0969da; padding-left: 10px; }
+  p { margin: 8px 0; }
+  code { background: #eef1f4; color: #cf222e; padding: 2px 6px; border-radius: 4px; font-family: "Consolas", monospace; font-size: 14px; }
+  pre { background: #1f2937; color: #e5e7eb; padding: 14px 16px; border-radius: 8px; overflow-x: auto; font-family: "Consolas", monospace; font-size: 14px; line-height: 1.6; }
+  pre .kw { color: #93c5fd; } pre .st { color: #fca5a5; } pre .cm { color: #9ca3af; }
+  .steps { list-style: none; padding: 0; }
+  .steps li { padding: 8px 0; border-bottom: 1px dashed #eaecef; }
+  .steps input { margin-right: 8px; transform: scale(1.2); }
+  .receipt { background: #eafaef; border: 1px solid #a3e6b8; border-radius: 8px; padding: 14px 16px; color: #1a7f37; margin-top: 22px; }
+  .answers { background: #f0f1f3; border-radius: 8px; padding: 14px 16px; color: #57606a; margin-top: 22px; font-size: 14px; }
+  .answers h2 { color: #57606a; border-left-color: #c2c8d0; }
+  .encourage { text-align: center; color: #0969da; font-weight: 600; margin-top: 24px; }
+
+
+  body { margin:0; background:#f6f7f9; color:#1f2328; font-family:-apple-system,"Microsoft YaHei",sans-serif; line-height:1.7; }
+  .card { max-width:820px; margin:28px auto; background:#fff; border-radius:14px; box-shadow:0 2px 12px rgba(0,0,0,.08); padding:28px 32px; }
+  h1 { color:#0969da; font-size:24px; margin:0 0 4px; }
+  .meta { color:#57606a; font-size:14px; margin-bottom:16px; }
+  .motivation { background:#fff4e5; border:1px solid #ffa940; border-radius:10px; padding:12px 16px; margin-bottom:14px; font-size:15px; }
+  .toolbox { background:#e6f4ff; border:1px solid #4096ff; border-radius:10px; padding:12px 16px; margin-bottom:18px; font-size:15px; }
+  h2 { color:#0969da; font-size:19px; margin-top:22px; border-left:4px solid #0969da; padding-left:10px; }
+  ol { padding-left:22px; }
+  ol li { margin-bottom:10px; }
+  .step-title { font-weight:600; }
+  code, pre { font-family:"Cascadia Code",Consolas,Monaco,monospace; }
+  pre { background:#1f2937; color:#e5e7eb; padding:12px 14px; border-radius:8px; overflow-x:auto; font-size:14px; margin:8px 0; }
+  .key { background:#fff8c5; border-radius:4px; padding:1px 5px; }
+  .answer { background:#f0f1f3; border-radius:8px; padding:12px 16px; font-size:14px; color:#57606a; margin-top:10px; }
+  .answer b { color:#1f2328; }
+  .receipt { background:#f6ffed; border:1px solid #95de64; border-radius:10px; padding:12px 16px; margin-top:18px; font-size:15px; }
+
+
+body{font-family:-apple-system,"Microsoft YaHei",sans-serif;background:#f6f7f9;color:#1f2328;margin:0;padding:24px;}
+.card{max-width:820px;margin:0 auto;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.06);padding:28px 32px;}
+h1{color:#0969da;font-size:22px;margin:0 0 6px;}
+.meta{color:#57606a;font-size:13px;margin-bottom:16px;}
+.motivation{background:#fff8e6;border-left:4px solid #f0a500;padding:12px 16px;border-radius:6px;margin-bottom:14px;font-size:14px;line-height:1.6;}
+.toolbox{background:#eef6ff;border-left:4px solid #0969da;padding:12px 16px;border-radius:6px;margin-bottom:20px;font-size:14px;}
+h2{color:#0969da;font-size:18px;border-bottom:2px solid #eaecef;padding-bottom:6px;margin-top:24px;}
+h3{color:#1f2328;font-size:15px;margin:18px 0 8px;}
+.label{font-weight:700;color:#cf222e;}
+.code{background:#1f2937;color:#e6edf3;padding:14px 16px;border-radius:8px;font-family:Consolas,Menlo,monospace;font-size:13px;white-space:pre;overflow-x:auto;margin:8px 0;}
+.note{background:#fff8c5;padding:10px 14px;border-radius:6px;font-size:13px;line-height:1.6;margin:8px 0;}
+.answer{background:#f0f1f3;color:#57606a;padding:10px 14px;border-radius:6px;font-size:13px;margin-top:10px;white-space:pre-wrap;}
+.footer{margin-top:22px;color:#57606a;font-size:13px;}
+
+.nav{position:sticky;background:#fff;border-bottom:1px solid #d0d7de;padding:8px 10px;display:flex;gap:8px;overflow-x:auto;white-space:nowrap;z-index:10;}
+.nav button{flex:0 0 auto;border:1px solid #0969da;background:#fff;color:#0969da;border-radius:18px;padding:6px 14px;font-size:13px;cursor:pointer;}
+.nav button.active{background:#0969da;color:#fff;}
+.nav button:active{opacity:.85;}
+.nav.sub{background:#f6f8fa;border-bottom:1px solid #d0d7de;padding:6px 10px;}
+.nav.sub button{border-color:#6e7781;color:#444d56;background:#fff;}
+.nav.sub button.active{background:#444d56;color:#fff;border-color:#444d56;}
+.page{display:none;padding:8px 4px 40px;}
+.page h1{margin-top:4px;}
+</style>
+</head>
+<body>
+<div class="nav top">
+  <button data-group="路线" onclick="showGroup(&#39;路线&#39;)">🗺️ 路线</button>
+  <button data-group="入门" onclick="showGroup(&#39;入门&#39;)">🎓 入门</button>
+  <button data-group="速查" onclick="showGroup(&#39;速查&#39;)">🔧 速查</button>
+  <button data-group="复盘" onclick="showGroup(&#39;复盘&#39;)">📒 复盘</button>
+  <button data-group="每日卡" onclick="showGroup(&#39;每日卡&#39;)">📅 每日卡</button>
+</div>
+<div class="nav sub" id="subnav"></div>
+<section id="sec1" data-group="路线" class="page" style="display:block">
+
+<div class="card">
+  <h1>🗺️ SQL + Python 学习路线图</h1>
+  <div class="meta">徐州 / 宿迁二手房数据运营 · 零基础 · 双击即看 · 每个知识点递进、不跳步</div>
+
+  <div class="motivation">💡 <b>你为什么学：</b>公司在优化，小城市更危险；看徐州招聘，不少岗位要 SQL + Python。学会它 = 多一条退路。每天练完，离「不怕变动」近一步。</div>
+
+  <div class="tip">这张图是整个学习地图。<b>绿色=已掌握，橙色=正在学，灰色=未来。</b>每天的双点卡会顺着这条线往下走，每个新知识点都建立在前一个之上。卡住回来翻这张图，知道自己到哪、下一步去哪。</div>
+
+  <div class="legend">
+    <span><i class="dot" style="background:#1a7f37"></i>已掌握</span>
+    <span><i class="dot" style="background:#bc4c00"></i>正在学</span>
+    <span><i class="dot" style="background:#8c959f"></i>未来</span>
+  </div>
+
+  <!-- 阶段一 -->
+  <div class="stage done">
+    <div class="stage-head"><span class="stage-no">阶段一</span><span class="stage-title">SQL 单表取数 · 地基</span></div>
+    <div class="stage-why">递进逻辑：先学会「从一张表里取某些列、某些行」，再学会「按条件筛、按指标排、取头部」——这是取数最基础的闭环。每天 2 点推进。</div>
+    <ul class="pts">
+      <li><b>SELECT + FROM</b>：取什么 / 从哪来（查询的骨架）</li>
+      <li><b>WHERE 等值筛选</b>：= 找特定值（如 城市='徐州'）</li>
+      <li><b>WHERE 数值比较</b>：> &lt; &gt;= &lt;= BETWEEN（如 面积>100）</li>
+      <li><b>AND / OR 多条件</b>：组合判断（如 徐州 且 合作率>0.6）</li>
+      <li><b>ORDER BY 排序</b>：结果排队（DESC 从高到低）</li>
+      <li><b>LIMIT 取前 N</b>：截取前几名（如 续费率最高的 5 家）</li>
+    </ul>
+  </div>
+
+  <!-- 阶段二 -->
+  <div class="stage current">
+    <div class="stage-head"><span class="stage-no">阶段二</span><span class="stage-title">SQL 分组汇总 · 分析核心</span></div>
+    <div class="stage-why">递进逻辑：分组必须配合聚合才有意义；聚合出的结果想再筛，用 HAVING（不能用 WHERE，因为 WHERE 在分组前执行）。这是分析岗天天用的「各维度汇总」。</div>
+    <ul class="pts">
+      <li class="here"><b>GROUP BY 分组</b>：把数据按维度分成堆（如 按城市分）</li>
+      <li><b>聚合函数 COUNT / SUM / AVG</b>：每堆算一个数（如 平均续费率、门店数）</li>
+      <li><b>HAVING 筛分组</b>：对汇总结果再过滤（如 门店数>10 的城市）</li>
+    </ul>
+  </div>
+
+  <!-- 阶段三 -->
+  <div class="stage future">
+    <div class="stage-head"><span class="stage-no">阶段三</span><span class="stage-title">SQL 多表关联 · 拼数据</span></div>
+    <div class="stage-why">递进逻辑：真实数据分散在多张表（门店表、经纪人表），必须会 JOIN 才能拼起来。内连接最基础，左连接是补充（保留左表全部）。<b>这是分水岭，会放慢多练。</b></div>
+    <ul class="pts">
+      <li><b>JOIN 内连接</b>：两表都匹配上的部分</li>
+      <li><b>JOIN 左连接</b>：保留左表全部，右表没匹配补 NULL</li>
+    </ul>
+  </div>
+
+  <!-- 阶段四 -->
+  <div class="stage future">
+    <div class="stage-head"><span class="stage-no">阶段四</span><span class="stage-title">SQL 高级分析 · 排名 / 累计</span></div>
+    <div class="stage-why">递进逻辑：窗口函数是「排名/累计」利器，但思维不同于 GROUP BY（不折叠原行），单独成阶段；CTE 用来组织复杂查询，放最后。<b>也是分水岭，多练。</b></div>
+    <ul class="pts">
+      <li><b>窗口函数 ROW_NUMBER</b>：给行编号 / 去重取最新</li>
+      <li><b>窗口函数 RANK 与 SUM OVER</b>：排名 / 累计，不折叠原行</li>
+      <li><b>CTE (WITH)</b>：把复杂查询拆成一步步，可读</li>
+      <li><b>综合真实取数</b>：用真实库 / 自己业务跑一条完整查询（SQL 收口）</li>
+    </ul>
+  </div>
+
+  <!-- 阶段五 -->
+  <div class="stage future">
+    <div class="stage-head"><span class="stage-no">阶段五</span><span class="stage-title">Python 基础 · 转码地基</span></div>
+    <div class="stage-why">递进逻辑：pandas 是 Python 库，先懂 Python 语法地基（变量、列表、字典、条件、循环、函数），再上 pandas 才不飘。</div>
+    <ul class="pts">
+      <li><b>变量与类型 / 列表与字典</b>：数据怎么装</li>
+      <li><b>条件 if / 循环 for / 函数</b>：逻辑怎么写、重复动作怎么包</li>
+    </ul>
+  </div>
+
+  <!-- 阶段六 -->
+  <div class="stage future">
+    <div class="stage-head"><span class="stage-no">阶段六</span><span class="stage-title">pandas 数据处理 · 替代 Excel 手工</span></div>
+    <div class="stage-why">递进逻辑：pandas 每个能力都能对应回你已会的 SQL（筛选=WHERE，汇总=GROUP BY，合并=JOIN，透视=Excel 透视表），学起来顺。这是你桌面徐宿报表的真正解法。</div>
+    <ul class="pts">
+      <li><b>读 Excel / 看数据</b>：把报表读进来</li>
+      <li><b>loc 筛选 / groupby 汇总</b>：对应 WHERE / GROUP BY</li>
+      <li><b>pivot_table 透视 / merge 合并</b>：对应 Excel 透视 / SQL JOIN</li>
+      <li><b>清洗缺失去重</b>：真实数据脏，先洗干净</li>
+      <li><b>综合复现分析</b>：用真实 Excel 复现一个你常做的分析</li>
+    </ul>
+  </div>
+
+  <!-- 阶段七 -->
+  <div class="stage future">
+    <div class="stage-head"><span class="stage-no">阶段七</span><span class="stage-title">可视化 + 实战 · 产出价值</span></div>
+    <div class="stage-why">递进逻辑：先会画图，再把图嵌进自动报告，最后把重复报表脚本化——直接替代你周报手工活，并形成简历作品集。</div>
+    <ul class="pts">
+      <li><b>matplotlib 折线柱状 / plotly 交互</b>：趋势图、对比图</li>
+      <li><b>自动出周报多 Sheet / 趋势看板</b>：替代手工周报</li>
+      <li><b>resample 月度汇总 / 自动化月报</b>：时间序列 + 脚本化</li>
+    </ul>
+  </div>
+
+  <div class="note">📌 <b>分水岭提醒：</b>阶段三（JOIN）和阶段四（窗口函数）是新手最容易晕的两块，到时候会自动放慢、多给练习，地基松了后面会卡。其余阶段按双点稳步推进。每天 10:30 自动推送当天的双点卡到这个文件夹。</div>
+
+  <div class="encourage">路线已完善、递进、符合常规学习逻辑。按这个走，8 月初拿下 SQL 全部语法，再转 Python/pandas，形成能写进简历的分析能力 👊</div>
+</div>
+
+</section>
+<section id="sec2" data-group="入门" class="page">
+
+<div class="wrap">
+  <header>
+    <h1>温暖の SQL 零基础互动课</h1>
+    <p>不用装任何软件，不用找网页——双击这个文件就能学。每课 2 分钟。</p>
+  </header>
+
+  <div class="tip">
+    💡 <b>怎么用：</b>每课先看「你想查什么」，再琢磨一句大白话，然后点「看答案」对照。
+    看懂了就点「这课我会了」。不用背，先看个眼熟。
+  </div>
+
+  <div class="lesson">
+    <h2>第 1 课：让电脑帮你从表里查一行</h2>
+    <p class="why">场景：你想知道「中国的人口是多少」。在数据库眼里，世界各国的数据都存在一张叫 <code>world</code> 的表里。</p>
+    <p><b>用大白话想：</b>「从 world 表里，挑出名字是中国那一行，给我看名字和人口。」</p>
+    <div class="code">SELECT name, population
+FROM world
+WHERE name = 'China';</div>
+    <button class="toggle" onclick="show('a1')">看答案 / 为什么这么写</button>
+    <div class="answer" id="a1">
+      <code>SELECT</code> 后面写「我要看哪些列」；<code>FROM</code> 后面写「从哪张表」；
+      <code>WHERE</code> 后面写「只挑满足条件的行」。这三句是 SQL 的骨架，
+      后面所有查询都是这三句加料。句末的 <code>;</code> 是结束符号，养成习惯写上。
+    </div>
+    <span class="done" id="d1"></span>
+    <button class="toggle" style="margin-top:10px" onclick="mark('d1')">这课我会了 ✓</button>
+  </div>
+
+  <div class="lesson">
+    <h2>第 2 课：按条件筛一批（WHERE）</h2>
+    <p class="why">场景：你想看「人口超过 1 亿的国家有哪些」。</p>
+    <p><b>用大白话想：</b>「从 world 表，挑人口大于 1 亿的，给我名字和人口。」</p>
+    <div class="code">SELECT name, population
+FROM world
+WHERE population > 100000000;</div>
+    <button class="toggle" onclick="show('a2')">看答案 / 为什么这么写</button>
+    <div class="answer" id="a2">
+      <code>WHERE</code> 里可以写大小比较：<code>&gt; &lt; = &gt;= &lt;=</code>。
+      数字不用加引号；文字（比如国家名）才要加单引号 <code>'China'</code>。
+      这课你已经在做「筛选」了——跟你 Excel 里点筛选器是一回事，只是换了个写法。
+    </div>
+    <span class="done" id="d2"></span>
+    <button class="toggle" style="margin-top:10px" onclick="mark('d2')">这课我会了 ✓</button>
+  </div>
+
+  <div class="lesson">
+    <h2>第 3 课：排个顺序（ORDER BY）</h2>
+    <p class="why">场景：你想看「人口最多的前几个国家」。</p>
+    <p><b>用大白话想：</b>「把国家按人口从多到少排，给我看前几名。」</p>
+    <div class="code">SELECT name, population
+FROM world
+ORDER BY population DESC
+LIMIT 5;</div>
+    <button class="toggle" onclick="show('a3')">看答案 / 为什么这么写</button>
+    <div class="answer" id="a3">
+      <code>ORDER BY 列名 DESC</code> 表示「按这列从大到小排」（ASC 是从小到大）。
+      <code>LIMIT 5</code> 是「只要前 5 行」。这俩配合就是 Excel 里的「排序 + 取前 N 名」。
+    </div>
+    <span class="done" id="d3"></span>
+    <button class="toggle" style="margin-top:10px" onclick="mark('d3')">这课我会了 ✓</button>
+  </div>
+
+  <div class="lesson">
+    <h2>第 4 课：按组算汇总（GROUP BY）—— 这课最贴近你工作</h2>
+    <p class="why">场景换成你的业务：一张表里每行是一个经纪人，有「城市」和「是否续费(1/0)」两列。你想算「徐州、宿迁各自的续费率」。</p>
+    <div class="biz">💼 这就是你周报里常要算的数。Excel 里你要筛选→透视→算比例，SQL 一句话搞定。</div>
+    <div class="code">SELECT 城市,
+       SUM(是否续费) * 1.0 / COUNT(*) AS 续费率
+FROM 经纪人表
+GROUP BY 城市;</div>
+    <button class="toggle" onclick="show('a4')">看答案 / 为什么这么写</button>
+    <div class="answer" id="a4">
+      <code>GROUP BY 城市</code> 意思是「把同一城市的行归成一组」。
+      <code>SUM(是否续费)</code> 算出这组里续了几个，<code>COUNT(*)</code> 是这组总人数，
+      相除就是续费率。 <code>AS 续费率</code> 是给这列起个好懂的名字。
+      以后你周报里「各城市续费率」「各门店合作率」全是这个套路。
+    </div>
+    <span class="done" id="d4"></span>
+    <button class="toggle" style="margin-top:10px" onclick="mark('d4')">这课我会了 ✓</button>
+  </div>
+
+  <div class="tip" style="margin-top:18px">
+    ✅ <b>到此为止，你已经认识了 SQL 的四块积木：</b> SELECT（看什么）· FROM（从哪来）·
+    WHERE（挑哪些）· GROUP BY（分组算）。后面所有的查询都是这几块拼来拼去。<br>
+    下一步：打开 <a href="https://sqlzoo.net/wiki/SELECT_basics" target="_blank">SQLZoo</a>
+    把第 1 课真跑一遍（网页里直接写，不用装）。跑通了回来告诉我，我教第 5 课。
+  </div>
+
+  <footer>温暖の互动课 · 双击即开 · 不用装环境 · 懒人友好</footer>
+</div>
+
+<script>
+  function show(id){
+    var el = document.getElementById(id);
+    el.classList.toggle('show');
+  }
+  function mark(id){
+    document.getElementById(id).textContent = '已掌握 ✓';
+  }
+</script>
+
+</section>
+<section id="sec3" data-group="速查" class="page">
+
+<div class="card">
+  <h1>SQL 条件运算符速查</h1>
+  <div class="meta">2026-07-27 · WHERE 后面用到的"判断工具"全在这里</div>
+  <div class="motivation">💡 你为什么学：公司在优化，小城市更危险；看徐州招聘，不少岗位要 SQL+Python。学会它=多一条退路。每天练完，离「不怕变动」近一步。</div>
+
+  <h2>一、比较运算符（两个值比大小 / 相等）</h2>
+  <table>
+    <tr><th>符号</th><th>含义</th><th>什么时候用</th><th>例子（二手房业务）</th></tr>
+    <tr><td><code>=</code></td><td>等于</td><td>精确匹配某个值</td><td><span class="ex">WHERE 城市 = '徐州'</span></td></tr>
+    <tr><td><code>!=</code> 或 <code>&lt;&gt;</code></td><td>不等于</td><td>排除某个值</td><td><span class="ex">WHERE 城市 != '徐州'</span></td></tr>
+    <tr><td><code>&gt;</code></td><td>大于</td><td>数值超过门槛</td><td><span class="ex">WHERE 续费率 &gt; 0.8</span></td></tr>
+    <tr><td><code>&lt;</code></td><td>小于</td><td>数值低于门槛</td><td><span class="ex">WHERE 合作率 &lt; 0.5</span></td></tr>
+    <tr><td><code>&gt;=</code></td><td>大于等于</td><td>含边界的"至少"</td><td><span class="ex">WHERE 增值业绩 &gt;= 10000</span></td></tr>
+    <tr><td><code>&lt;=</code></td><td>小于等于</td><td>含边界的"至多"</td><td><span class="ex">WHERE 开发量 &lt;= 3</span></td></tr>
+    <tr><td><code>BETWEEN a AND b</code></td><td>在 a 到 b 之间（含 a 和 b）</td><td>取一段连续范围，比写 <code>&gt;=</code> 和 <code>&lt;=</code> 更短</td><td><span class="ex">WHERE 经纪人开发量 BETWEEN 5 AND 10</span></td></tr>
+  </table>
+
+  <h2>二、逻辑运算符（把多个条件拼起来）</h2>
+  <table>
+    <tr><th>符号</th><th>含义</th><th>规则</th><th>例子</th></tr>
+    <tr><td><code>AND</code></td><td>并且</td><td>所有条件都真，才留下</td><td><span class="ex">WHERE 城市='徐州' AND 续费率 &gt; 0.8</span></td></tr>
+    <tr><td><code>OR</code></td><td>或者</td><td>任意一个条件真，就留下</td><td><span class="ex">WHERE 城市='徐州' OR 城市='宿迁'</span></td></tr>
+    <tr><td><code>NOT</code></td><td>非 / 取反</td><td>把条件结果反过来</td><td><span class="ex">WHERE NOT 城市='徐州'</span></td></tr>
+  </table>
+  <div class="warn"><b>优先级坑：</b>AND 比 OR 先算。写 <code>城市='徐州' OR 城市='宿迁' AND 续费率&gt;0.8</code> 会先算 AND，变成"徐州的全部，或宿迁里续费率&gt;0.8的"。要改变顺序就用括号：<code>WHERE (城市='徐州' OR 城市='宿迁') AND 续费率&gt;0.8</code>。</div>
+
+  <h2>三、成员运算符（在不在清单里）</h2>
+  <table>
+    <tr><th>符号</th><th>含义</th><th>什么时候用</th><th>例子</th></tr>
+    <tr><td><code>IN (...)</code></td><td>在清单里任意一个</td><td>要匹配多个固定值，比连写 OR 干净</td><td><span class="ex">WHERE 城市 IN ('徐州','宿迁','南京')</span></td></tr>
+    <tr><td><code>NOT IN (...)</code></td><td>不在清单里</td><td>排除多个固定值</td><td><span class="ex">WHERE 门店 NOT IN ('测试店','废弃店')</span></td></tr>
+  </table>
+
+  <h2>四、模糊匹配（LIKE，找"包含某词"）</h2>
+  <table>
+    <tr><th>写法</th><th>含义</th><th>例子</th></tr>
+    <tr><td><code>LIKE '%词%'</code></td><td>包含"词"</td><td><span class="ex">WHERE 门店名 LIKE '%旗舰%'</span>（找所有带"旗舰"的店）</td></tr>
+    <tr><td><code>LIKE '词%'</code></td><td>以"词"开头</td><td><span class="ex">WHERE 门店名 LIKE '徐州%'</span></td></tr>
+    <tr><td><code>LIKE '%词'</code></td><td>以"词"结尾</td><td><span class="ex">WHERE 门店名 LIKE '%店'</span></td></tr>
+    <tr><td><code>NOT LIKE '%词%'</code></td><td>不包含"词"</td><td><span class="ex">WHERE 门店名 NOT LIKE '%测试%'</span></td></tr>
+  </table>
+  <div class="tip"><b>通配符：</b><code>%</code> = 任意多个字符（包括0个）；<code>_</code> = 任意一个字符。数据库里国家名/门店名是英文时，词也要用英文，如 <code>LIKE '%United%'</code>。</div>
+
+  <h2>五、空值判断（NULL）</h2>
+  <table>
+    <tr><th>符号</th><th>含义</th><th>例子</th></tr>
+    <tr><td><code>IS NULL</code></td><td>字段为空（没填）</td><td><span class="ex">WHERE 续费率 IS NULL</span>（找出漏填的）</td></tr>
+    <tr><td><code>IS NOT NULL</code></td><td>字段不为空</td><td><span class="ex">WHERE 增值业绩 IS NOT NULL</span></td></tr>
+  </table>
+  <div class="warn"><b>NULL 特殊：</b>不能用 <code>= NULL</code> 判断空，必须用 <code>IS NULL</code>。这是新手最高频坑之一。</div>
+
+  <h2>记忆口诀</h2>
+  <div class="tip">
+    • <b>比大小</b>：<code>= &gt; &lt; &gt;= &lt;=</code> 跟数学一样，就多一个 <code>BETWEEN...AND...</code><br>
+    • <b>拼条件</b>：AND 全真 / OR 一真 / NOT 取反，记不住就加括号<br>
+    • <b>多值</b>：IN 清单、NOT IN 除名<br>
+    • <b>找词</b>：LIKE 配 %，%在两边=包含<br>
+    • <b>空值</b>：IS NULL 不是 = NULL<br>
+    • <b>值规则</b>：字符串/国家名/门店名用英文单引号；数字不加引号；所有符号英文半角
+  </div>
+
+  <div class="foot">今天你已经会用 =、&gt;、IN、LIKE，这套速查帮你补全其余的。下次写 WHERE 卡壳，翻这张卡即可 👊</div>
+</div>
+
+</section>
+<section id="sec4" data-group="复盘" class="page">
+
+<div class="card">
+  <h1>SQL 实战复盘 · Day1 扩展（2026-07-27）</h1>
+  <div class="meta">徐州 / 宿迁二手房数据运营 · 零基础 · 双击即看 · 连续学习 1 天</div>
+
+  <div class="motivation">💡 <b>你为什么学：</b>公司在优化，小城市更危险；看徐州招聘，不少岗位要 SQL+Python。学会它 = 多一条退路。每天练完，离「不怕变动」近一步。</div>
+
+  <div style="background:#ddf4ff;border:1px solid #54aeff;border-radius:8px;padding:10px 14px;margin-bottom:20px;">📌 <b>速查工具箱：</b><a href="SQL工具箱.html" style="color:#0969da">点我打开 SQL 运算符 / 语法速查合集</a>（练习时忘了哪个符号，随时点进来查，不用背）</div>
+
+  <h2>【今天实际掌握的知识点】</h2>
+  <ul>
+    <li><code>SELECT 列 FROM 表</code> —— 取数基本结构（先想：看啥、从哪）</li>
+    <li><code>WHERE 列 = '值'</code> —— 等值筛选，字符串值用<b>英文单引号</b></li>
+    <li><code>WHERE 列 &gt; 数字</code> —— 数值比较，数字<b>不加引号</b></li>
+    <li>计算列 <code>SELECT gdp/population</code> —— 列与列之间直接运算</li>
+    <li>多列输出 <code>SELECT name, population</code> —— 列与列之间<b>英文逗号</b>分隔</li>
+    <li><code>WHERE 列 IN ('a','b','c')</code> —— 多值清单匹配，等于任意一个即可</li>
+    <li><code>WHERE 列 LIKE '%词%'</code> —— 模糊匹配「包含某词」</li>
+    <li>英文数据值 <code>continent = 'South America'</code> —— 表里存英文，不能写中文</li>
+  </ul>
+
+  <h2>【高频易错点（今天全踩过）】</h2>
+  <ul>
+    <li><b>WHERE 后只写值缺列名</b>：必须写完整「列名 = 值」，不能只写 'France'</li>
+    <li><b>中文弯引号</b> ''：字符串值必须英文直单引号 <code>'France'</code></li>
+    <li><b>数字加引号</b> '5000000'：数字是数值，不加引号</li>
+    <li><b>多列忘逗号</b>：<code>SELECT name population</code> 报错，要 <code>name, population</code></li>
+    <li><b>中文值</b> '南美洲'：表里是 <code>'South America'</code>，按表写</li>
+    <li><b>列名拼错</b> incorporate：用表里真实存在的列名</li>
+    <li><b>= 当 LIKE 用</b>：精确相等用 <code>=</code>，包含某词用 <code>LIKE '%x%'</code></li>
+    <li><b>值写错国家</b>（France vs Germany）：跑前核对题目要求</li>
+  </ul>
+
+  <h2>【今天跑通的题】</h2>
+  <ul>
+    <li>德国 / 法国 / 中国人口 —— <code>WHERE name = '值'</code></li>
+    <li>大国人均收入 —— 计算列 + 数值比较 <code>WHERE area &gt; 5000000</code></li>
+    <li>斯堪的纳维亚三国 —— <code>WHERE name IN ('Sweden','Norway','Denmark')</code></li>
+    <li>南美洲人口（百万） —— 英文 continent 值</li>
+    <li>含「联合」的国家 —— <code>WHERE name LIKE '%United%'</code></li>
+  </ul>
+
+  <div class="encourage">Day1 实战超额完成，已把计划里前几天的 WHERE 玩法全跑通了。明天 16:30 第 2 天卡继续，讲 ORDER BY / LIMIT 👊</div>
+</div>
+
+</section>
+<section id="sec5" data-group="复盘" class="page">
+
+<div class="card">
+<h1>📒 今日复盘 · 2026-07-29</h1>
+<div class="meta">专项：ORDER BY + LIMIT + GROUP BY ｜ 零基础 SQL 单表取数练习</div>
+
+<h2>一、今天学了哪些</h2>
+
+<h3>1. ORDER BY（排序）</h3>
+<p>• 单列：<code>ORDER BY 列 DESC</code>（降序）/ <code>ASC</code>（升序，可省略不写）</p>
+<p>• 多列：<b>只有 1 个 ORDER BY</b>，列之间用逗号 <code>ORDER BY 列1, 列2</code></p>
+<p>• 表达式排序：<code>ORDER BY 计算列</code>，如 <code>ORDER BY gdp/population DESC</code></p>
+
+<h3>2. LIMIT（取前 N 行）</h3>
+<p>• <code>LIMIT N</code> 截取排序后的前 N 行</p>
+<p>• 配 <code>ASC</code> 取最小的前 N；配 <code>DESC</code> 取最大的前 N</p>
+<div class="note">⚠️ SQLZoo 默认引擎是 SQL Server（它用 <code>TOP</code> 不用 <code>LIMIT</code>）。想用 LIMIT 必须切到 <b>MySQL</b> 引擎：页面底部 Engine 下拉改成 MySQL。</div>
+
+<h3>3. GROUP BY（分组汇总）</h3>
+<p>• 结构：<code>SELECT 分组列, 聚合函数 FROM 表 [WHERE ...] GROUP BY 分组列</code></p>
+<p>• 聚合函数：<code>COUNT(*)</code>、<code>COUNT(列)</code>、<code>SUM(列)</code>、<code>AVG(列)</code></p>
+<div class="note">SELECT continent, COUNT(*)<br>FROM world<br>GROUP BY continent;</div>
+<p>• 执行顺序：<b>FROM → WHERE → GROUP BY → SELECT → ORDER BY → LIMIT</b></p>
+
+<h2>二、易错点（重点记！）</h2>
+<div class="err"><b>1. 引擎没切 MySQL</b> —— SQLZoo 默认 SQL Server 不认 LIMIT，会报错。底部 Engine 改 MySQL。</div>
+<div class="err"><b>2. 升序拼错</b> —— 是 <code>ASC</code>，没有 <code>sc</code> 这种写法。</div>
+<div class="err"><b>3. 多列排序写两个 ORDER BY</b> —— 只能写 1 个，列间用逗号 <code>ORDER BY a, b</code>。</div>
+<div class="err"><b>4. FROM 后面乱接东西</b> —— <code>FROM 表</code> 后面只跟表名。列写在 SELECT 后、条件写 WHERE，不能用逗号把列/条件塞进 FROM。</div>
+<div class="err"><b>5. GROUP BY 后 SELECT 放明细列</b> —— 分组后一行变一组，只能放「分组列 + 聚合函数」，不能放 name 这类明细列。</div>
+<div class="err"><b>6. WHERE 位置错</b> —— 写在 GROUP BY <b>前面</b>（先筛再分组）。</div>
+<div class="err"><b>7. ORDER BY 放错字段</b> —— 曾把 <code>area&gt;1000</code> 当排序字段（那是布尔值 0/1）。筛选用 WHERE，排序字段写真正的列 <code>area</code>。</div>
+<div class="err"><b>8. 误以为 LIMIT 能管排序</b> —— LIMIT 只截"前 N 行"，截得对不对全看 ORDER BY 排得对不对。</div>
+<div class="err"><b>9. SQLZoo 自由练习对不上原题就显示"答案错"</b> —— 这不代表语法错，只看你练的语法灵不灵。</div>
+<div class="err"><b>10. 称呼</b> —— 框里写的是「SQL 语句 / SQL 查询」，不叫"句子"。</div>
+
+<h2>三、今日成果</h2>
+<div class="ok">
+✅ ORDER BY / LIMIT：6 题全对<br>
+✅ GROUP BY：2 题从错改对（初稿错在 FROM 后逗号接条件、SELECT 放明细列 name，纠正后正确）<br>
+⚠️ 自评 GROUP BY 仍生疏 → 明天学新知识点前先复习 + 练 5 题（已设 10:00 提醒）
+</div>
+
+<div class="footer">⚡ 今天把排序、取前 N、分组汇总三大单表取数动作打通了，下一块是聚合 + HAVING。L</div>
+</div>
+
+</section>
+<section id="sec6" data-group="每日卡" class="page">
+
+<div class="card">
+  <h1>SQL 每日学习 · 第 1 天（2026-07-27）</h1>
+  <div class="meta">徐州 / 宿迁二手房数据运营 · 零基础 · 双击即看 · <span class="streak">连续学习 1 天</span> · 今日练习约 30–40 分钟</div>
+
+  <div class="motivation">💡 <b>你为什么学：</b>公司在优化，小城市更危险；今天看徐州招聘，不少岗位要 SQL + Python。学会它 = 多一条退路。每天练完，你就离「不怕变动」近一步。</div>
+
+  <div style="background:#ddf4ff;border:1px solid #54aeff;border-radius:8px;padding:10px 14px;margin-bottom:20px;">📌 <b>速查工具箱：</b><a href="SQL工具箱.html" style="color:#0969da">点我打开 SQL 运算符 / 语法速查合集</a>（练习时忘了哪个符号，随时点进来查，不用背）</div>
+
+  <h2>【今日知识点】</h2>
+  <p><code>SELECT</code> + <code>FROM</code>：让电脑从一张表里挑出你想看的列。</p>
+
+  <h2>【为什么这样写 · 逻辑】</h2>
+  <div class="why">
+    你跟人开口要东西，也是「给我看（SELECT）从哪个本子（FROM）里挑」。<br>
+    SQL 之所以把这句话拆成固定结构，是因为电脑必须按<b>确定顺序</b>解析：它<b>先找 FROM 指定的那张表 → 再用后面的条件筛行 → 最后按 SELECT 挑列</b>。你写的顺序是「看啥 → 从哪」，但电脑执行的顺序是「从哪 → 挑谁 → 看啥」。<br>
+    记住<b>思考三步法</b>：我要哪些列？从哪张表？挑哪些行？对应 <code>SELECT / FROM / WHERE</code>。换任何表你都会写，不用背。
+  </div>
+
+  <h2>【今日正式练习 · 目标 30–40 分钟】</h2>
+  <div class="steps">
+    <label><input type="checkbox"> 1. 打开 <a href="https://sqlzoo.net/wiki/SELECT_basics" style="color:#0969da">SQLZoo SELECT basics</a>，页面下拉到能写 SQL 的输入框</label>
+    <label><input type="checkbox"> 2. 抄写并运行下面这句，看是否出现各国数据：</label>
+    <pre><code>SELECT name, population
+FROM world;</code></pre>
+    <label><input type="checkbox"> 3. 改条件试试（先不管对错，感受「按名字挑行」）：</label>
+    <pre><code>SELECT name, population
+FROM world
+WHERE name = 'France';</code></pre>
+    <label><input type="checkbox"> 4. 打开你桌面一张真实 Excel，在纸上列出它的「列名」（如 城市 / 门店 / 续费率 / 经纪人），把它想象成一张「表」——这是明天 WHERE 的素材</label>
+    <label><input type="checkbox"> 5. 自己写一条：从你想象的表里 <code>SELECT 门店, 续费率</code> —— 写不出别慌，把草稿发我，我帮你改</label>
+  </div>
+
+  <h2>【今日自测 · 做完打勾】</h2>
+  <div class="quiz">
+    <label><input type="checkbox"> 1. <code>SELECT</code> 后面跟的是：___（列名 / 表名）</label>
+    <label><input type="checkbox"> 2. <code>FROM</code> 后面跟的是：___（列名 / 表名）</label>
+    <label><input type="checkbox"> 3. 一句话：查询执行顺序是 FROM → ___ → ___</label>
+    <div class="answer">答案：1. 列名　2. 表名　3. WHERE → SELECT</div>
+  </div>
+
+  <div class="receipt">【回执】做完在本对话回我「Day1完成」或发练习截图。没回 = 今天没练，连续天数归零。</div>
+
+  <div class="encourage">第一天不求会写，先把「查询 = 三步思考」刻进脑子。练完回来，我陪你过 👊</div>
+</div>
+
+</section>
+<section id="sec7" data-group="每日卡" class="page">
+
+<div class="card">
+  <h1>SQL 每日学习 · 第 2 天（2026-07-29）</h1>
+  <div class="meta">连续学习 1 天　|　今日重点：WHERE 等值筛选（路线第 2 课）</div>
+
+  <div class="motivation">
+    💡 <b>你为什么学：</b>公司在优化，小城市更危险；看徐州招聘，不少岗位要 SQL+Python。学会它 = 多一条退路。每天练完，离「不怕变动」近一步。
+  </div>
+
+  <div class="toolbox">
+    📌 <b>速查工具箱：</b><a href="SQL工具箱.html">点我打开 SQL 运算符 / 语法速查合集</a>（练习时忘了哪个符号，随时点进来查，不用背）
+  </div>
+
+  <h2>【今日知识点】</h2>
+  <p>用 <code>WHERE 列 = 值</code> 精准筛出你关心的那批数据——比如只看「徐州」的门店，或「续费率 = 已续费」的客户。这是从几万行里捞出你要的那一撮的核心开关。</p>
+
+  <h2>【为什么这样写·逻辑】</h2>
+  <p>大白话讲电脑怎么想：<code>SELECT</code> 告诉电脑"要哪些列"，<code>FROM</code> 告诉电脑"去哪张表拿"。但一张表可能有几万行（徐宿所有门店、所有经纪人），你通常只想要其中一部分。</p>
+  <p><code>WHERE</code> 就是"筛选条件"——电脑会<strong>逐行扫描</strong>，只对满足条件的行放行，其余整行丢弃。等号 <code>=</code> 表示"完全相等匹配"：左边列的值<strong>必须恰好等于</strong>右边的值，这一行才留下。</p>
+  <p>两个坑要记住：</p>
+  <p>① <strong>文本值必须加单引号</strong> <code>'徐州'</code>，数字不用引号。电脑分不清你是写个城市名还是写段代码，加引号它才知道"这是个具体值"。</p>
+  <p>② 电脑只认<strong>精确相等</strong>，不认"差不多"。<code>城市 = '徐州'</code> 只留城市恰好是"徐州"的行，多一个字（"徐州市"）少一个字都不匹配。所以写条件时，值要和你表里存的一字不差。</p>
+
+  <h2>【今日正式练习·目标 30–40 分钟】</h2>
+  <ul class="steps">
+    <li><input type="checkbox"> 第一步：先写基础查询，理解 FROM 后面是"表名"。<br>
+      <pre><span class="kw">SELECT</span> 城市, 门店名, 门店数
+<span class="kw">FROM</span> 门店表;</pre></li>
+    <li><input type="checkbox"> 第二步：加 WHERE 等值筛选，只留徐州。<br>
+      <pre><span class="kw">SELECT</span> 城市, 门店名, 门店数
+<span class="kw">FROM</span> 门店表
+<span class="kw">WHERE</span> 城市 = <span class="st">'徐州'</span>;</pre></li>
+    <li><input type="checkbox"> 第三步（<b>必须自己敲，别复制</b>）：把表名和列名换成你实际的，筛出「合作率状态 = '已合作'」的经纪人。<br>
+      <pre><span class="kw">SELECT</span> 经纪人, 城市, 合作率状态
+<span class="kw">FROM</span> 经纪人表
+<span class="kw">WHERE</span> 合作率状态 = <span class="st">'已合作'</span>;</pre></li>
+    <li><input type="checkbox"> 第四步：试手感——两个条件一起筛「城市 = '宿迁' 且 状态 = '活跃'」。<br>
+      <pre><span class="kw">SELECT</span> *
+<span class="kw">FROM</span> 门店表
+<span class="kw">WHERE</span> 城市 = <span class="st">'宿迁'</span> <span class="kw">AND</span> 状态 = <span class="st">'活跃'</span>;</pre>
+      <span style="color:#57606a;font-size:13px;">（AND 明天正式讲，今天先感受"两个条件都要满足"）</span></li>
+    <li><input type="checkbox"> 第五步：验证。数一下筛出来的行数，确认比全表少、且城市列里只有你筛的那个值。</li>
+  </ul>
+
+  <h2>【今日自测】</h2>
+  <p>1. 想只看「续费率 = 已续费」的客户（假设列名就叫 续费率），WHERE 子句怎么写？</p>
+  <p>2. 文本值和数字，在 <code>WHERE 列 =</code> 后面写法有什么不同？</p>
+  <p>3. 如果写成 <code>WHERE 城市 = 徐州</code>（不加引号）会怎样？为什么？</p>
+
+  <div class="receipt">
+    📩 <b>【回执】</b>做完在本对话回「<b>Day2完成</b>」或发截图；没回 = 今天没练，连续归零。30 分钟，换一条退路，值。
+  </div>
+
+  <div class="answers">
+    <h2>自测答案（做完再对）</h2>
+    <p>1. <code>WHERE 续费率 = '已续费'</code>（"已续费"是文本，加单引号）。</p>
+    <p>2. 文本值必须加单引号（<code>'徐州'</code>），数字直接写（<code>WHERE 门店数 = 5</code>），不用引号。</p>
+    <p>3. 会报错或匹配不到。不加引号时，电脑把 <code>徐州</code> 当成"列名/变量"去解析，而不是一个具体值，于是要么报错、要么拿着空结果。记住：具体文本值一定要加单引号。</p>
+  </div>
+
+  <div class="encourage">今天只差 30 分钟，离「不怕变动」又近一步。去练，回执见 ⚡</div>
+</div>
+
+</section>
+<section id="sec8" data-group="每日卡" class="page">
+
+<div class="card">
+  <h1>SQL 每日学习 · 第 3 天（2026-07-29）</h1>
+  <div class="meta">连续学习 1 天 ｜ 今日知识点：ORDER BY 排序 ｜ 预计 30–40 分钟</div>
+
+  <div class="motivation">💡 <b>你为什么学：</b>公司在优化，小城市更危险；看徐州招聘，不少岗位要 SQL+Python。学会它 = 多一条退路。每天练完，离「不怕变动」近一步。</div>
+
+  <div class="toolbox">📌 速查工具箱：<a href="SQL工具箱.html" style="color:#0969da">点我打开 SQL 运算符 / 语法速查合集</a>（练习时忘了哪个符号，随时点进来查，不用背）</div>
+
+  <h2>【今日知识点】</h2>
+  <p>用 <b>ORDER BY</b> 给门店 / 城市按某个指标（续费率、合作率、开发量）排队——比如「把徐州各门店按续费率从高到低排」。这是你周报里「排名」「Top N」需求的直接工具。</p>
+
+  <h2>【为什么这样写 · 逻辑】</h2>
+  <p>ORDER BY 的作用，是告诉电脑<span class="key">「按哪一列来排队」</span>。它工作在 WHERE 筛选之后——先筛出你要的数据，再对这些数据排队。理解执行顺序是关键：</p>
+  <p><b>FROM（找表）→ WHERE（筛行）→ SELECT（挑列）→ ORDER BY（排队）</b></p>
+  <ul>
+    <li><b>默认升序 ASC</b>（从小到大）：不写 DESC 时，电脑按「从低到高」排。</li>
+    <li><b>降序 DESC</b>：排行榜要「从高到低」，必须显式加 <code>DESC</code>。就像排队领号，你指定按分数排、从高往低站。</li>
+    <li><b>多列排序</b>：<code>ORDER BY 城市 ASC, 续费率 DESC</code> —— 先按城市排，同一城市内再按续费率从高到低。逗号分隔，谁在前谁优先。</li>
+  </ul>
+  <p>记住一句话：<span class="key">ORDER BY 永远写在 WHERE 后面</span>，因为没筛完的数据没法排。</p>
+
+  <h2>【今日正式练习 · 目标 30–40 分钟】</h2>
+  <ol>
+    <li><span class="step-title">练手环境：</span>打开 SQLZoo「SELECT from World」里的 ORDER BY 相关题目，或直接用 <code>world</code> 表练。</li>
+    <li><span class="step-title">练习1（升序）：</span>查所有国家名和人口，按人口从少到多排。<br>
+      <pre>SELECT name, population FROM world ORDER BY population;</pre></li>
+    <li><span class="step-title">练习2（降序）：</span>查国家名和人口，按人口从多到少（最多的排最前）。<br>
+      <pre>SELECT name, population FROM world ORDER BY population DESC;</pre></li>
+    <li><span class="step-title">练习3（多列排序）：</span>查国家名、大陆、人口，先按大陆升序、同大陆内按人口降序。<br>
+      <pre>SELECT name, continent, population FROM world ORDER BY continent, population DESC;</pre></li>
+    <li><span class="step-title">练习4（业务改造 · 必须自己敲）：</span>把你周会数据的思路搬过来——假设有表 <code>xuzhou_stores(城市, 门店, 续费率)</code>，写一句「徐州各门店按续费率从高到低排」：<br>
+      <pre>SELECT 门店, 续费率 FROM xuzhou_stores WHERE 城市='徐州' ORDER BY 续费率 DESC;</pre>
+      <span class="key">先 WHERE 筛城市 → 再 ORDER BY 续费率 DESC</span>，顺序不能乱。把这句抄进 SQLZoo 的自定义框（或记在脑子里），确认自己真的理解每一步。</li>
+  </ol>
+
+  <h2>【今日自测】</h2>
+  <ol>
+    <li>想看「人口最少的两个国家」（暂不加 LIMIT），ORDER BY 该怎么写？<br>
+      <span class="answer"><b>答：</b><code>SELECT name, population FROM world ORDER BY population;</code> —— 升序，最小的人口排最前，前两个就是最少的。</span></li>
+    <li>ORDER BY 后面不加 DESC，默认是升序还是降序？<br>
+      <span class="answer"><b>答：</b>升序（ASC，从小到大）。要降序必须写 DESC。</span></li>
+    <li>下面哪句顺序对？A: <code>WHERE ... ORDER BY ...</code>　B: <code>ORDER BY ... WHERE ...</code><br>
+      <span class="answer"><b>答：</b>A 对。ORDER BY 必须在 WHERE 之后，因为要先筛完再排队。</span></li>
+  </ol>
+
+  <div class="receipt">📩 <b>回执：</b>做完上面 4 步 + 自测，在本对话回「<b>Day3完成</b>」或发截图。今天你做了 Day2 + Day3 两张卡，连续学习按「天」算仍是第 1 天（昨天断了），明天续成 2 天。</div>
+
+  <p style="margin-top:18px; color:#57606a; font-size:14px;">➡️ <b>预告：</b>明天 Day4 学 <code>LIMIT</code> 取前 N 名——配合今天的排序，就能一句查出「续费率最高的 5 家门店」。今天先吃透 ORDER BY。</p>
+</div>
+
+</section>
+<section id="sec9" data-group="每日卡" class="page">
+
+<div class="card">
+<h1>SQL 每日学习 · 双点推进（2026-07-29）</h1>
+<div class="meta">连续学习 1 天 ｜ 今天起改为每天 2 个知识点，加速推进</div>
+
+<div class="motivation">💡 <b>你为什么学：</b>公司在优化，小城市更危险；看徐州招聘，不少岗位要 SQL+Python。学会它 = 多一条退路。每天练完，离「不怕变动」近一步。</div>
+
+<div class="toolbox">📌 <b>速查工具箱：</b><a href="SQL工具箱.html" style="color:#0969da">点我打开 SQL 运算符 / 语法速查合集</a>（练习时忘了哪个符号，随时点进来查，不用背）</div>
+
+<h2>今日双点：LIMIT 取前 N ＋ GROUP BY 分组</h2>
+
+<h3>知识点 A · LIMIT —— 只取结果的前 N 行</h3>
+<p><span class="label">【今日知识点】</span>徐州续费率最高的 5 家门店，只要排在最前面的 5 名 → 用 LIMIT。</p>
+<p><span class="label">【为什么这样写·逻辑】</span>ORDER BY 把结果排好序后，LIMIT N 告诉电脑"我只要最前面的 N 行"。它永远写在 ORDER BY 后面（执行顺序最末）。为什么需要它？排序往往是为了"看头部 / 尾部"——Top 5 门店、倒数 3 名预警，LIMIT 直接截出你要的那几行，不用肉眼翻。</p>
+<div class="code">SELECT 门店, 续费率
+FROM xuzhou_stores
+ORDER BY 续费率 DESC
+LIMIT 5;</div>
+<p class="note">📝 SQLZoo 练手版：<code>SELECT name FROM world ORDER BY population DESC LIMIT 10;</code>（查人口最多的 10 个国家）</p>
+<p><span class="label">【练一练】</span>把 5 改成 3，写出"人口最多的 3 个国家"的 SQL。</p>
+
+<h3>知识点 B · GROUP BY —— 按维度分组汇总</h3>
+<p><span class="label">【今日知识点】</span>按城市 / 门店汇总续费率、统计经纪人数量 → 用 GROUP BY。</p>
+<p><span class="label">【为什么这样写·逻辑】</span>表里每行是一条明细（一家门店一行）。但你要的是"每个城市的平均续费率"——这需要把"同一城市的所有行打包成一组"，再对每组算平均值。GROUP BY 城市 做的正是"打包"这一步。<br><b>关键规则：</b>分组后，SELECT 里只能出现「分组列」和「聚合结果（AVG / COUNT / SUM）」，不能写普通明细列——因为一行已经变成"一组"，明细列无法对应到单值。</p>
+<div class="code">SELECT 城市, AVG(续费率) AS 平均续费率, COUNT(*) AS 门店数
+FROM xuzhou_stores
+GROUP BY 城市;</div>
+<p><span class="label">【练一练】</span>按门店分组，统计每家门店的经纪人数量（提示：COUNT(经纪人列)）。</p>
+
+<h2>今日自测（做完再对答案）</h2>
+<p>1. LIMIT 必须写在 ORDER BY 的____（前 / 后）？</p>
+<p>2. GROUP BY 之后，SELECT 里能不能写"没分组的明细列"？为什么？</p>
+<p>3. 写出"按城市统计门店数，并按门店数从高到低取前 2"的 SQL。</p>
+<div class="answer">答案：
+① 后。
+② 不能。分组后一行变一组，明细列无法对应单值，只能放分组列或聚合结果。
+③ SELECT 城市, COUNT(*) AS 门店数 FROM xuzhou_stores GROUP BY 城市 ORDER BY 门店数 DESC LIMIT 2;</div>
+
+<h2>回执</h2>
+<p>做完在本对话回「<b>双点1完成</b>」或发截图；没回 = 今天没练，连续归零。</p>
+
+<div class="footer">⚡ 今天是你主动要求"加量"的第一天——量加上去了，地基（WHERE + ORDER BY）你也稳了，接着冲。L</div>
+</div>
+
+</section>
+<script>
+const pages = [{"id": "sec1", "group": "路线", "title": "🗺️ 路线图"}, {"id": "sec2", "group": "入门", "title": "🎓 入门课"}, {"id": "sec3", "group": "速查", "title": "🔧 运算符速查"}, {"id": "sec4", "group": "复盘", "title": "📒 Day1复盘"}, {"id": "sec5", "group": "复盘", "title": "📒 今日复盘"}, {"id": "sec6", "group": "每日卡", "title": "📅 Day1卡"}, {"id": "sec7", "group": "每日卡", "title": "📅 Day2卡"}, {"id": "sec8", "group": "每日卡", "title": "📅 Day3卡"}, {"id": "sec9", "group": "每日卡", "title": "📅 双点卡"}];
+function showPage(id){
+  document.querySelectorAll('.page').forEach(function(s){s.style.display='none';});
+  document.getElementById(id).style.display='block';
+  document.querySelectorAll('.nav.sub button').forEach(function(b){b.classList.toggle('active', b.dataset.page===id);});
+  document.querySelectorAll('.nav.top button').forEach(function(b){b.classList.remove('active');});
+  const g = document.getElementById(id).dataset.group;
+  const topBtn = document.querySelector('.nav.top button[data-group="'+g+'"]');
+  if(topBtn) topBtn.classList.add('active');
+  window.scrollTo(0,0);
+}
+function renderSubnav(group){
+  const sub = document.getElementById('subnav');
+  sub.innerHTML = '';
+  pages.filter(function(p){return p.group===group;}).forEach(function(p){
+    const b = document.createElement('button');
+    b.textContent = p.title;
+    b.dataset.page = p.id;
+    b.onclick = function(){ showPage(p.id); };
+    sub.appendChild(b);
+  });
+}
+function showGroup(group){
+  const first = pages.find(function(p){return p.group===group;});
+  if(!first) return;
+  renderSubnav(group);
+  showPage(first.id);
+}
+showGroup('路线');
+</script>
+</body>
+</html>
